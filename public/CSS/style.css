@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #3F4E4F;
+}
+.my-nav{
+    background-color: #2C3639;
+}
+.card{
+    background-color: transparent;
+    color: #d4d4d4;
+    border: none;
+}
+
+.head img{
+    height: 60vh;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+}
+
+.card img{
+    width: 100%;
+    height: 300px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.card a{
+    color: white;
+    text-decoration: none;
+}
+.card a:hover,
+.card a:focus{
+    color: #b9b8b8;
+}
+.card p b{
+    color: green;
+}

@@ -1,0 +1,92 @@
+<% layout('./layout/boilerplate') %>
+  <link rel="stylesheet" href="/CSS/star.css">
+  <style>
+    .cart {
+      top: 2.2%;
+      right: 7%;
+      color: #818181;
+    }
+    .seller {
+      font-size: larger;
+      top: 1.8%;
+      right: 80%;
+      color: #818181;
+    }
+    @media(max-width:900px){
+      .cart {
+        top: 3%;
+        right: 20%;
+      }
+      .grid{
+        grid-template-columns: repeat(2,1fr);
+        justify-items: center;
+      }
+    }
+    .card{
+      background-color: #2C3639;
+    }
+    @media(max-width:700px) {
+      .cart {
+        top: 3%;
+        right: 20%;
+      }
+      .grid{
+        grid-template-columns: repeat(1,1fr);
+        justify-items: center;
+      }
+    }
+  </style>
+  <a href="/cart" class="position-absolute cart nav-link"><i class="fa-solid fa-cart-shopping"> <span>
+        <%= cart.length %>
+      </span></i></a>
+
+  <% for(let product of products){ %>
+    <% if(currentUser && product.user.equals(currentUser._id)){ %>
+      <a href="/seller" class="position-absolute seller nav-link">Seller</a>
+      <% } %>
+        <% } %>
+
+          <div class="grid">
+            <% for(let product of products){ %>
+              <div class="card m-3" style="width: 20rem;">
+                <% for(let img of product.image){ %>
+                  <img src="<%= img.url %> " alt="<%= product.name %> ">
+                  <% } %>
+                    <strong class="p-2 text-center"><a href="/product/<%= product._id %>">
+                        <%= product.name %>
+                      </a></strong>
+                    <p class="p-2 text-center"><b>&#8377;</b>
+                      <%= product.price %> /-
+                    </p>
+                    <p class="p-2 text-center">
+                      <%= product.description %> 
+                    </p> 
+                    <% let sum=0 %>
+                      <% product.review.forEach(num=>{(sum+=num.rating)}) %>
+                        <% let avg=sum/product.review.length %>
+                          <p class="starability-result me-auto ms-auto" data-rating="<%=Math.floor(avg)%>"></p>
+                        
+                          
+              </div>
+              <% } %>
+          </div>
+          <div></div>
+
+          <% let limit=4 %>
+            <% let page=Math.ceil(count/limit) %>
+              <form action="/home" class="text-center">
+                <ul class="pagination d-flex justify-content-center">
+                  <% if(startIndex>0){ %>
+                    <li class="page-item"><a href="/home" class="page-link"><span aria-hidden="true">&laquo;</span></a></li>
+                    <% } %>
+                      <% for(let i=1 ; i<=page ; i++){ %>
+                        <li class="page-item"><button class="page-link" value="<%= i %>" name="page">
+                            <%= i %>
+                          </button></li>
+                        <% } %>
+                          <% if(endIndex<count){ %>
+                            <li class="page-item"><button class="page-link" value="<%= page %>"
+                                name="page"><span aria-hidden="true">&raquo;</span></button>
+                              <% } %>
+                </ul>
+              </form>

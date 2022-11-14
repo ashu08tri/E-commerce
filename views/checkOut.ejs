@@ -1,0 +1,82 @@
+<% layout('./layout/boilerplate') %>
+<link rel="stylesheet" href="/CSS/checkout.css">
+
+<style>
+    @media(max-width:700px){
+        .product-details{
+            position: absolute;
+            left: 57%;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="content c-1 mt-3">
+        <div class="customer-form">
+            <form action="/home/<%= checkOut._id %>/placeorder?_method=put" method="post">
+                <div class="display">
+                    <label for="" class="form-label">Name :</label>
+                    <input type="text" name="" id="" class="form-control" required>
+                </div>
+                <div class="display">
+                    <label for="" class="form-label">Mobile No :</label>
+                    <input type="number" name="" id="" class="form-control" min="10" required>
+                </div>
+                <div class="display">
+                    <label for="" class="form-label">Address :</label>
+                    <textarea name="" id="" cols="8" rows="1" class="form-control" required></textarea>
+                </div>
+                <div class="display">
+                    <label for="" class="form-label">Zip Code :</label>
+                    <input type="number" name="" id="" class="form-control" min="6" required>
+                </div>
+                <div class="display">
+                    <label for="" class="form-label">State :</label>
+                    <input type="text" name="" id=""class="form-control" required>
+                    <label for="" class="form-label">City :</label>
+                    <input type="text" name="" id=""class="form-control" required>
+                </div>
+                <div class="mt-3">
+                    <input type="radio" name="payment" id="dc" required>
+                    <label for="dc">Debit Card</label>
+                </div>
+                <div>
+                    <input type="radio" name="payment" id="cc" required>
+                    <label for="cc">Credit Card</label>
+                </div>
+                <div>
+                    <input type="radio" name="payment" id="nb" required>
+                    <label for="nb">Net Banking</label>
+                </div>
+                <div>
+                    <input type="radio" name="payment" id="upi" required>
+                    <label for="upi">UPI</label>
+                </div>
+                <input type="number" name="stock" value="<%= checkOut.stock-checkOut.qty %>" class="d-none">
+                <button class="btn btn-success mt-3">Place Order</button>
+            </form> 
+        </div>
+        <div class="product-details">
+            <% checkOut.image.forEach(img=>{%> 
+            <img src="<%=img.thumbnail%>" alt="" class="img-thumbnail">
+            <% }) %> 
+            <h4><%= checkOut.name %></h4>
+            <p><b>&#8377; <%= checkOut.price %></b></p>
+            <form action="/home/<%= checkOut._id %>/checkout?_method=put" method="post" id="qty-submit">
+                <input type="text" name="_id" value="<%= checkOut._id %>" class="d-none"> 
+                <select name="qty" style="background-color: #fff; color: #000;" onchange="this.form.submit()">
+                    <option value="">Selected Quantity : <%= checkOut.qty %></option>
+                    <% for(let i=1;i<=checkOut.stock;i++){ %> 
+                    <option value="<%= i %>" name="qty"><%= i %></option>
+                    <% } %> 
+                </select>
+                <b class="d-block mt-2">QTY : <%= checkOut.qty %></b>
+                <b>&#8377; <%= checkOut.price*checkOut.qty %></b>
+              </form>
+        </div>
+    </div>
+
+    
+</div>
+
+   

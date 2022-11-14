@@ -1,0 +1,191 @@
+<% layout('./layout/boilerplate') %>
+<link rel="stylesheet" href="/CSS/star.css">
+  
+<style>
+.show {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .cart{
+    top: 2.2%;
+    right: 7%;
+    color: #818181;
+  }
+  .img>img {
+    width: 400px;
+    height: 400px;
+    margin-right: 10px;
+  }
+
+  .data {
+    width: 40%;
+    padding: 65px 50px 0 0;
+  }
+
+  .my-nav {
+    background-color: black;
+  }
+  .in-stock{
+    color: #699f18;
+    font-size: 22px;
+  }
+  .out-stock{
+    color: #b82323;
+    font-size: 21px;
+  }
+  .overflow{
+    overflow-y: scroll;
+    height: 220px;
+  }
+  
+  @media(max-width:900px){
+    body{
+    overflow: scroll;
+  }
+    .cart{
+    top: 3%;
+    right: 20%; 
+  }
+  .show{
+    flex-direction: column;
+    align-items: center;
+  }
+  .data{
+    width: 80%;
+    padding: 0;
+  }
+  .rating{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .rev{
+    width: 80%;
+  }
+  .overflow{
+    width: 100%;
+  }
+  .review{
+    width: 100%;
+  }
+  }
+</style>
+<a href="/cart" class="position-absolute cart nav-link"><i class="fa-solid fa-cart-shopping"> <span><%= cart.length %></span></i></a>
+
+  <% for(let img of item.image){ %>
+    <div class="show">
+      <div class="img">
+        <img src="<%= img.url %> " alt="" class="img-fluid rounded-start">
+      </div>
+      <% } %>
+        <div class="data">
+          <h4 class="card-title">
+            <%= item.name %>
+          </h4>
+          <p class="card-text mt-3" style="font-size: 20px;"><b>&#8377;</b>
+            <%= item.price %> 
+          </p>
+          <% if(item.stock===0){ %>
+            <p class="out-stock">Out Of Stock</p>
+            <% }else{ %>
+              <p class="in-stock">In Stock</p>
+              <% } %> 
+          <p class="card-text">
+            <%= item.description %>
+          </p>
+          <form action="/product/<%= item._id %>?_method=put" method="post" id="qty-submit"> 
+            <select name="qty" style="width:25%; background-color: #fff; color: #000;" onchange="this.form.submit()" required>
+                <option value="">Select Quantity</option>
+                <% for(let i=1;i<=5;i++){ %> 
+                <option value="<%= i %>" name="qty"><%= i %></option>
+                <% } %> 
+            </select>
+          </form>
+          <% if(item.qty>0){ %> 
+          <p class="card-text">
+           QTY : <%= item.qty %> 
+          </p><% }else{ %> 
+            <p>
+             QTY : 0
+            </p>
+            <% } %> 
+          <% if(item.stock===0){ %>
+          <a class="btn btn-primary px-5 disabled" href="/home/<%= item._id %>/checkout">Buy Now</a>
+          <form action="/home/<%= item._id %>/cart" method="post" class="d-inline ms-2 disabled"><button class="btn btn-warning">Add To Cart</button></form>
+          <% }else{ %>
+          <a class="btn btn-primary px-5" href="/home/<%= item._id %>/checkout">Buy Now</a>
+          <form action="/home/<%= item._id %>/cart" method="post" class="d-inline ms-2"><button class="btn btn-warning">Add To Cart</button></form>
+            <% } %> 
+          <% if(currentUser && item.user.equals(currentUser._id)){ %>
+            <div class="d-flex my-2">
+              <a href="/product/<%= item._id %>/edit" class="btn btn-info me-3">Edit Product</a>
+              <form action="/product/<%= item._id %>?_method=delete" method="post"><button class="btn btn-danger">Delete
+                  Product</button></form>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+
+    <div class="d-flex justify-content-evenly rating">
+
+      <div class="col-4 rev">
+        <h2 class="my-2">User Ratings</h2>
+        <% if(item.review.length){ %> 
+        <div class="overflow">
+        <% for(let review of item.review){ %>
+          <div class="card mt-3" style="max-width: 30rem;">
+            <div class="card-body">
+              <div>
+                <b>User - <%= review.user.username.toUpperCase() %></b><br>
+                <p class="starability-result my-2" data-rating="<%= review.rating %>">
+                  Rated: <%=review.rating%> stars
+                </p>
+                <p>
+                  <b>Review</b> : <%= review.review %>
+                </p>
+                <% if(currentUser && review.user.equals(currentUser._id)){ %>
+                  <form action="/product/<%= item._id %>/review/<%= review._id %>?_method=delete" method="post">
+                    <button class="btn btn-danger">Delete</button>
+                  </form>
+                  <% } %>
+              </div>
+            </div>
+          </div>
+          <% } %>
+        </div>
+        <% }else{ %>
+          <h3 class="mt-3" style="color: #7f7f7f;">No Reviews Yet...</h3>
+          <% } %> 
+      </div>
+
+      <div class="col-4 rev">
+        <div class="review">
+          <form action="/product/<%= item._id %>/review " method="post">
+            <div>
+              <h2><label for="rating">Rate Product</label></h2>
+              <fieldset class="starability-coinFlip mt-2">
+                <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="rating" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="rating" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="rating" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="rating" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="rating" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+              </fieldset>
+            </div>
+            <div class="mb-2">
+              <textarea name="review" cols="20" rows="5" placeholder="Write Your Review..." class="form-control"></textarea>
+            </div>
+            <button class="btn btn-success">Add Review</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    

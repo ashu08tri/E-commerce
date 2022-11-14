@@ -1,0 +1,21 @@
+<% layout('./layout/boilerplate') %> 
+<style>
+    .my-nav{
+        background-color: black;
+    }
+</style>
+
+<div class="d-flex flex-column align-items-center mt-1">
+<% for(let s of search){ %>
+<div class="card d-flex flex-row my-2" style="width: 80%; height: 20rem;">
+    <% for(let img of s.image){ %>
+        <img src="<%= img.url %> " alt="" style="width: 280px;">
+        <% } %> 
+    <div class="card-body align-self-center">
+                <h1><a href="/product/<%= s._id %>" style="text-decoration: none; color: black;"><%= s.name %></a></h1>
+                <h4><b>&#8377;</b> <%= s.price %></h4>
+                <strong><%= s.description %></strong> 
+    </div>
+</div>
+<% } %> 
+</div>

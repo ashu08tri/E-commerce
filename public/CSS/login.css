@@ -1,0 +1,29 @@
+.my-nav{
+    background-color: black;
+}
+.container{
+    overflow: hidden;
+    position: relative;
+    height: 80vh;
+    width: 30vw;
+}
+.login{
+    transition: .3s ease-out;
+    position: absolute;
+    top: 17.3%;
+    left: 14%;
+    border: none;
+}
+.signup{
+    transition: .3s ease-out;
+    top: 10%;
+    left: -20%;
+    border: none;
+}
+.left{
+    translate: -410px;  
+}
+.right{
+    translate: 410px;  
+}
+

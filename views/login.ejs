@@ -1,0 +1,72 @@
+<% layout('./layout/boilerplate') %>
+<link rel="stylesheet" href="/CSS/login.css">
+
+ <div class="container d-flex justify-content-center">
+    <div class="col offset-2 mt-5 ">
+        <div class="card login" style="width: 20rem; height: 30rem;">
+            <div class="card-body">
+                <h2 class="text-center">LogIn</h2>
+                <form action="/user/login" method="post" >
+                    <div class="my-3">
+                        <label for="user-name" class="form-label">User Name</label>
+                        <input type="text" name="username" id="user-name" class="form-control" required>
+                    </div>
+                    <div class="my-3">
+                        <label for="password" class="form-label">User Password</label>
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </div>
+                    <button class="btn">Login</button>
+                </form>
+                <button class="move-left btn mt-2">Register</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="col mt-5">
+        <div class="card signup right" style="width: 20rem; height: 30rem;">
+            <div class="card-body">
+                <h2 class="text-center">Register</h2>
+                <form action="/user/register" method="post">
+                    <div class="my-3">
+                        <label for="email" class="form-label">User Email</label>
+                        <input type="email" name="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="my-3">
+                        <select name="role" id="role" class="form-control" required>
+                            <option value="">Select Type Of User</option>
+                            <option value="seller">Seller</option>
+                            <option value="buyer">Buyer</option>
+                        </select>
+                    </div>
+                    <div class="my-3">
+                        <label for="user" class="form-label">User Name</label>
+                        <input type="text" name="username" id="user" class="form-control" required>
+                    </div>
+                    <div class="my-3">
+                        <label for="reg-password" class="form-label">User Password</label>
+                        <input type="password" name="password" id="reg-password" class="form-control" required>
+                    </div>
+                    <button class="btn">Register</button>
+                </form>
+                <button class="move-right btn mt-2">Login</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    const moveLeft = document.querySelector('.move-left');
+    const moveRight = document.querySelector('.move-right');
+    const login = document.querySelector('.login');
+    const signup = document.querySelector('.signup');
+    moveLeft.addEventListener('click',()=>{
+        login.classList.add('left')
+        signup.classList.remove('right')
+    })
+    moveRight.addEventListener('click',()=>{
+        signup.classList.add('right')
+        login.classList.remove('left')
+    })
+</script>

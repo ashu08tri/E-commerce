@@ -1,0 +1,143 @@
+<% layout('./layout/boilerplate') %>
+<link rel="stylesheet" href="/CSS/seller.css">
+
+<div class="button-container my-3">
+    <a href="/home/add-product" class="circle-button ms-4">Add Product</a>
+    <a href="" class="circle-button ms-4">In Stock <%= products.length %></a>
+    <a href="" class="circle-button ms-4">Sold <%= soldItem.length %></a>
+</div>
+<div class="chart mt-3 d-flex justify-content-around">
+    <div class="line-chart">
+        <canvas id="lineChart"></canvas>
+    </div>
+    <div class="pie-chart">
+        <canvas id="donutChart"></canvas>
+    </div> 
+</div>
+<h2><%= soldItem.name %></h2>
+<div class="table-data">
+<% if(soldItem.length){ %>
+    <table>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Sold</th>
+          <th>Left</th>
+        </tr>
+        <% for(let sold of soldItem){ %> 
+        <tr>
+          <td><%= sold.name %></td>
+          <td><b>&#8377;</b> <%= sold.price %></td>
+          <td><%= sold.stock %></td>
+          <td><%= sold.qty %></td>
+          <td><%= sold.stock-sold.qty %></td>
+        </tr>
+        <% } %> 
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+      </table>
+    <% }else{ %>
+        <table>
+            <tr>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Sold</th>
+            </tr>
+            <% for(let product of products){ %> 
+            <tr>
+              <td><%= product.name %></td>
+              <td><b>&#8377;</b> <%= product.price %></td>
+              <td><%= product.stock %></td>
+              <td>N/A</td>
+            </tr>
+            <% } %> 
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td> 
+            </tr>
+          </table>
+        <% } %> 
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+
+const lChart = document.getElementById('lineChart').getContext('2d');
+const dChart = document.getElementById('donutChart').getContext('2d');
+const product = '<%-products.length%>'
+const sold = '<%-soldItem.length%>'
+const lineChart = new Chart(lChart, {
+    type: 'line',
+    data: {
+        labels: ['Initial Amount','Amount Earned'],
+        datasets: [{
+            label: 'Total Amount',
+            data: [0, 89],
+            backgroundColor: [
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(75, 192, 192, 0.2)'    
+            ],
+            borderColor: [
+            '    rgba(153, 102, 255, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(75, 192, 192, 1)'      
+            ],
+            borderWidth: .5
+        }]
+    },
+    options: {
+    scales: {
+      y: { 
+        min: 0,
+        max: 100
+      }
+    }
+  },
+});
+
+const donutChart = new Chart(dChart, {
+    type: 'pie',
+    data: {
+        labels: ['In Stock','Sold'],
+        datasets: [{
+            label: 'Total Amount',
+            data: [product, sold],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(75, 192, 192, 0.2)'    
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(75, 192, 192, 1)'      
+            ],
+            borderWidth: 1
+        }]
+    },
+});   
+</script>
